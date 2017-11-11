@@ -45,8 +45,8 @@ RUN ruby -ryaml -e 'print ({"production"=>{"adapter"=>"sqlite3","database"=>"db/
  && bundle exec rake generate_secret_token \
  && bundle exec rake db:migrate \
  && chown -R redmine:redmine db files log tmp public/plugin_assets \
+ && su-exec redmine bundle exec rake tmp:create \
  && echo "done."
 
-USER redmine
 EXPOSE 3000
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+CMD ["su-exec", "redmine", "bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
